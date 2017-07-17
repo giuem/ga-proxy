@@ -6,6 +6,8 @@ import (
 
 	"flag"
 
+	"crypto/tls"
+
 	"github.com/satori/go.uuid"
 	"github.com/tomasen/realip"
 )
@@ -33,7 +35,11 @@ func SendData(uid string, req *http.Request) {
 	q.Add("vp", req.FormValue("vp"))
 	q.Add("z", req.FormValue("z"))
 	newReq.URL.RawQuery = q.Encode()
-	client := &http.Client{}
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
 	resp, err := client.Do(newReq)
 	if err != nil {
 		log.Fatal(err)
