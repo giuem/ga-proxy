@@ -32,8 +32,9 @@ func SendData(uid string, req *http.Request) {
 	q.Add("z", req.FormValue("z"))
 	newReq.URL.RawQuery = q.Encode()
 
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	tr := &http.Transport{}
+	if *skipSSLVerify {
+		tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	}
 	client := &http.Client{Transport: tr}
 	resp, err := client.Do(newReq)
