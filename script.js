@@ -1,5 +1,6 @@
-  var ga = "UA-102578664-1";
-(function(ga, url,window, document, navigator, location) {
+var ga = "UA-xxxx-x";
+var ga_url = "https://ga.giuem.com";
+(function(ga, url, window, document, navigator, location) {
   var screen = window.screen;
   var encode = encodeURIComponent;
 
@@ -14,6 +15,6 @@
     'z=' + (+new Date)
   ];
 
-  window.__beacon_img = new Image();
-  window.__beacon_img.src = url + '?' + data.join('&');;
-})(ga, "https://ga.giuem.com",window, document, navigator, location);
+  window.__ga_img = new Image();
+  window.__ga_img.src = url + '?' + data.join('&');;
+})(ga, ga_url, window, document, navigator, location);
