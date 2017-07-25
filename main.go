@@ -21,7 +21,9 @@ func init() {
 
 // ServerHandle handle proxy logic
 func ServerHandle(w http.ResponseWriter, req *http.Request) {
-	if req.Method != "GET" {
+	if req.Method != "GET" ||
+		len(req.Referer()) == 0 || len(req.FormValue("ga")) == 0 {
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -30,7 +32,7 @@ func ServerHandle(w http.ResponseWriter, req *http.Request) {
 
 	uid := GetOrSetUUID(w, req)
 
-	w.WriteHeader(http.StatusNoContent)
+	w.WriteHeader(http.StatusOK)
 
 	go SendData(uid, req)
 }
