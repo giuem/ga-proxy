@@ -10,12 +10,15 @@ import (
 
 // SendData send data to google server
 func SendData(uid string, req *http.Request) {
-	newReq, err := http.NewRequest("GET", "https://www.google-analytics.com/collect", nil)
+	req, err := http.NewRequest("GET", "https://www.google-analytics.com/collect", nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return
 	}
 
-	q := newReq.URL.Query()
+	req.Close = true
+
+	q := req.URL.Query()
 	q.Add("v", "1")
 	q.Add("t", "pageview")
 	q.Add("tid", req.FormValue("ga"))
@@ -30,20 +33,20 @@ func SendData(uid string, req *http.Request) {
 	q.Add("sr", req.FormValue("sr"))
 	q.Add("vp", req.FormValue("vp"))
 	q.Add("z", req.FormValue("z"))
-	newReq.URL.RawQuery = q.Encode()
+	req.URL.RawQuery = q.Encode()
 
 	tr := &http.Transport{}
 	if *skipSSLVerify {
 		tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	}
 	client := &http.Client{Transport: tr}
-	resp, err := client.Do(newReq)
+	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	defer resp.Body.Close()
 	if *debug {
-		log.Printf("SEND %s\n", newReq.URL.RawQuery)
+		log.Printf("SEND %s\n", req.URL.RawQuery)
 	}
 }
