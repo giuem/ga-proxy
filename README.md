@@ -1,18 +1,28 @@
 # ga-proxy
 
+[![Docker Build Statu](https://img.shields.io/docker/build/giuem/ga-proxy.svg?style=flat-square)](https://hub.docker.com/r/giuem/ga-proxy/)
 [![GitHub release](https://img.shields.io/github/release/giuem/ga-proxy.svg?style=flat-square)](https://github.com/giuem/ga-proxy/releases/latest)
 
-Speed up Google Analytics
+Accelerate Google Analytics
 
 
 
 ## Get Start
 
-### 1. Install 
+### Run with Docker
+
+```bash
+docker pull giuem/ga-proxy
+docker run -d -p <port>:80 --name <container_name> giuem/ga-proxy
+```
+
+### Run as you like
+
+#### 1. Install 
 
 Download binary from [release](https://github.com/giuem/ga-proxy/releases) or build yourself.
 
-### 2. Run
+#### 2. Run
 
 ```
 ./ga_proxy [arguments]
@@ -34,7 +44,7 @@ e.g.
 
 The program will run at 0.0.0.0:4000 and skip SSL verify 
 
-### 3. Add Script to your website
+#### 3. Add Script to your website
 
 See [script](script.js).
 
