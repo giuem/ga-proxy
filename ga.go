@@ -43,6 +43,7 @@ func SendData(uid string, req *http.Request) {
 	resp, err := client.Do(newReq)
 	if err != nil {
 		log.Println(err)
+		return
 	}
 
 	defer resp.Body.Close()
