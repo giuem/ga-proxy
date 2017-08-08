@@ -1,4 +1,4 @@
-package main
+package ga
 
 import (
 	"crypto/tls"
@@ -8,9 +8,11 @@ import (
 	"github.com/tomasen/realip"
 )
 
+const url = "https://www.google-analytics.com/collect"
+
 // SendData send data to google server
-func SendData(uid string, req *http.Request) {
-	newReq, err := http.NewRequest("GET", "https://www.google-analytics.com/collect", nil)
+func SendData(uid string, req *http.Request, skipSSLVerify, debug bool) {
+	newReq, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Println(err)
 		return
@@ -36,7 +38,7 @@ func SendData(uid string, req *http.Request) {
 	newReq.URL.RawQuery = q.Encode()
 
 	tr := &http.Transport{}
-	if *skipSSLVerify {
+	if skipSSLVerify {
 		tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	}
 	client := &http.Client{Transport: tr}
@@ -47,7 +49,30 @@ func SendData(uid string, req *http.Request) {
 	}
 
 	defer resp.Body.Close()
-	if *debug {
+	if debug {
 		log.Printf("SEND %s\n", newReq.URL.RawQuery)
 	}
+}
+
+// Detect detect connection with Google
+func Detect(skipSSLVerify bool) error {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+
+	req.Close = true
+	tr := &http.Transport{}
+	if skipSSLVerify {
+		tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	}
+	client := &http.Client{Transport: tr}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+
+	defer resp.Body.Close()
+
+	return nil
 }
