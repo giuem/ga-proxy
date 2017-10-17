@@ -1,12 +1,22 @@
+FROM golang:alpine3.6 AS BUILD
+
+WORKDIR /go/src/github.com/giuem/ga_proxy
+
+COPY . .
+
+RUN  apk add --no-cache git
+
+RUN go get -v && \
+  go build -ldflags "-w -s" -o ga_proxy
+
 FROM alpine:3.6
 LABEL maintainer "giuem <i@giuem.com>"
 
 WORKDIR /app
 
-RUN apk --no-cache add curl wget && \
-    curl -sS https://api.github.com/repos/giuem/ga-proxy/releases/latest | grep -Eo 'https(.+?)linux_386' | wget -nv -i - -O ga_proxy && \
-    chmod +x ga_proxy && \
-    apk del curl wget
+RUN apk --no-cache add ca-certificates
+
+COPY --from=BUILD /go/src/github.com/giuem/ga_proxy/ga_proxy .
 
 EXPOSE 80
 
