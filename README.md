@@ -60,16 +60,7 @@ Or simple usage, just change `UA-xxxx-x`, and use my service (not fast outside o
 
 ## Build
 
-1. Get requirement
-
-   ```bash
-   go get github.com/mitchellh/gox github.com/tomasen/realip github.com/satori/go.uuid 
-   ```
-
-
-2. Build
-
-   ```bash
-   gox -os="!freebsd !netbsd !openbsd" -ldflags="-s -w" -output="build/{{.Dir}}_{{.OS}}_{{.Arch}}"
-   ```
+```bash
+gox -os="!freebsd !netbsd !openbsd" -ldflags="-s -w" -output="build/{{.Dir}}_{{.OS}}_{{.Arch}}"
+```
 
