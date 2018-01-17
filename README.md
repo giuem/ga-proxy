@@ -16,6 +16,16 @@ docker pull giuem/ga-proxy
 docker run -d -p <port>:80 --name <container_name> giuem/ga-proxy
 ```
 
+### Run with Docker Compoese
+
+vi `docker-compose.yml`, set port range (Defalut is `9080-9180`).
+
+Then start containers, specify the number of instances.
+
+``` bash
+docker-compose up -d --scale proxy=NUM
+```
+
 ### Run as you like
 
 #### 1. Install 
