@@ -14,7 +14,7 @@ const url = "https://www.google-analytics.com/collect"
 func SendData(uid string, req *http.Request, skipSSLVerify, debug bool) {
 	newReq, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		log.Println(err)
+		log.Println("[Error] Cannot make request: ", err)
 		return
 	}
 
@@ -44,13 +44,13 @@ func SendData(uid string, req *http.Request, skipSSLVerify, debug bool) {
 	client := &http.Client{Transport: tr}
 	resp, err := client.Do(newReq)
 	if err != nil {
-		log.Println(err)
+		log.Println("[Error] Cannot make request: ", err)
 		return
 	}
 
 	defer resp.Body.Close()
 	if debug {
-		log.Printf("SEND %s\n", newReq.URL.RawQuery)
+		log.Printf("[Debug] SEND %s\n", newReq.URL.RawQuery)
 	}
 }
 

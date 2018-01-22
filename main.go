@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/giuem/ga_proxy/ga"
+	"github.com/giuem/ga-proxy/ga"
 	uuid "github.com/satori/go.uuid"
 
 	"flag"
@@ -35,7 +35,11 @@ func serverHandle(w http.ResponseWriter, req *http.Request) {
 	w.Header().Add("Cache-Control", "no-cache, no-store, must-revalidate")
 	w.Header().Add("Content-Type", "image/gif")
 
-	uid := getOrSetUUID(w, req)
+	uid, err := getOrSetUUID(w, req)
+	if err != nil {
+		log.Println("[Error] Cannot generate uuid: ", err)
+		return
+	}
 
 	w.WriteHeader(http.StatusOK)
 
@@ -53,15 +57,19 @@ func serverDetect(w http.ResponseWriter, req *http.Request) {
 
 func main() {
 	flag.Parse()
-	log.Println("http server start at:", *httpAddr)
+	log.Println("[Info] HTTP server start at: ", *httpAddr)
 	log.Fatal(http.ListenAndServe(*httpAddr, nil))
 }
 
-func getOrSetUUID(w http.ResponseWriter, req *http.Request) string {
+func getOrSetUUID(w http.ResponseWriter, req *http.Request) (string, error) {
 	cookie, err := req.Cookie("uuid")
 	var uid string
 	if err == http.ErrNoCookie {
-		ns := uuid.NewV4()
+		ns, err := uuid.NewV4()
+		if err != nil {
+			return "", nil
+		}
+
 		uid = uuid.NewV5(ns, req.Form.Encode()+req.UserAgent()+req.RemoteAddr).String()
 		http.SetCookie(w, &http.Cookie{
 			Name:     "uuid",
@@ -73,5 +81,5 @@ func getOrSetUUID(w http.ResponseWriter, req *http.Request) string {
 	} else {
 		uid = cookie.Value
 	}
-	return uid
+	return uid, nil
 }
