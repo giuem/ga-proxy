@@ -61,7 +61,7 @@ See [script](script.js).
 Here is compression version.
 
 ```javascript
-!function(a,b,c,d,e){var f=c.screen,g=encodeURIComponent,h=["ga="+a,"dt="+g(d.title),"dr="+g(d.referrer),"ul="+(e.language||e.browserLanguage||e.userLanguage),"sd="+f.colorDepth+"-bit","sr="+f.width+"x"+f.height,"vp="+Math.max(d.documentElement.clientWidth,c.innerWidth||0)+"x"+Math.max(d.documentElement.clientHeight,c.innerHeight||0),"z="+ +new Date];c.__ga_img=new Image,c.__ga_img.src=b+"?"+h.join("&")}("UA-xxxx-x","https://ga.giuem.com",window,document,navigator,location);
+!function(a,b,c,d,e){var f=c.screen,g=encodeURIComponent,h=["ga="+a,"dt="+g(d.title),"dr="+g(d.referrer),"ul="+(e.language||e.browserLanguage||e.userLanguage),"sd="+f.colorDepth+"-bit","sr="+f.width+"x"+f.height,"vp="+Math.max(d.documentElement.clientWidth,c.innerWidth||0)+"x"+Math.max(d.documentElement.clientHeight,c.innerHeight||0),"z="+Date.now()];c.__ga_img=new Image,c.__ga_img.src=b+"?"+h.join("&")}("UA-xxxx-x","https://ga.giuem.com",window,document,navigator,location);
 ```
 
 You need to change `UA-xxxx-x` and `https://ga.giuem.com` to your own.

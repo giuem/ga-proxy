@@ -12,7 +12,7 @@ var ga_url = "https://ga.giuem.com";
     'sd=' + screen.colorDepth + '-bit',
     'sr=' + screen.width + 'x' + screen.height,
     'vp=' + Math.max(document.documentElement.clientWidth, window.innerWidth || 0) + 'x' + Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
-    'z=' + (+new Date)
+    'z=' + Date.now()
   ];
 
   window.__ga_img = new Image();
