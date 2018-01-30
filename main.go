@@ -1,13 +1,13 @@
 package main
 
 import (
-	"log"
-	"net/http"
-
-	"github.com/giuem/ga-proxy/ga"
-	uuid "github.com/satori/go.uuid"
-
 	"flag"
+	"log"
+
+	"github.com/buaazp/fasthttprouter"
+	"github.com/giuem/ga-proxy/ga"
+	"github.com/giuem/ga-proxy/utils"
+	"github.com/valyala/fasthttp"
 )
 
 var (
@@ -20,66 +20,58 @@ func init() {
 	flag.BoolVar(debug, "d", false, "output debug info")
 	flag.BoolVar(skipSSLVerify, "s", false, "skip SSL verify")
 	flag.StringVar(httpAddr, "l", ":80", "listen address")
-
-	http.HandleFunc("/", serverHandle)
-	http.HandleFunc("/detect", serverDetect)
 }
 
-func serverHandle(w http.ResponseWriter, req *http.Request) {
-	if req.Method != "GET" ||
-		len(req.Referer()) == 0 || len(req.FormValue("ga")) == 0 {
-		w.WriteHeader(http.StatusBadRequest)
+func index(ctx *fasthttp.RequestCtx) {
+	if len(ctx.Referer()) == 0 || len(ctx.QueryArgs().Peek("ga")) == 0 {
+		ctx.Response.SetStatusCode(fasthttp.StatusBadRequest)
 		return
 	}
 
-	w.Header().Add("Cache-Control", "no-cache, no-store, must-revalidate")
-	w.Header().Add("Content-Type", "image/gif")
+	ctx.Response.Header.Set("Cache-Control", "no-cache, no-store, must-revalidate")
+	ctx.Response.Header.Set("Content-Type", "image/gif")
 
-	uid, err := getOrSetUUID(w, req)
+	uid, err := utils.GetOrSetUUID(ctx)
 	if err != nil {
 		log.Println("[Error] Cannot generate uuid: ", err)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
+	ctx.Response.SetStatusCode(fasthttp.StatusOK)
 
-	go ga.SendData(uid, req, *skipSSLVerify, *debug)
+	q := ctx.QueryArgs()
+
+	go ga.SendData(&ga.Data{
+		UID: uid,
+		Tid: q.Peek("ga"),
+		Dl:  ctx.Referer(),
+		IP:  utils.Realip(ctx),
+		Ua:  ctx.UserAgent(),
+		Dt:  q.Peek("dt"),
+		Dr:  q.Peek("dr"),
+		Ul:  q.Peek("ul"),
+		Sd:  q.Peek("sd"),
+		Sr:  q.Peek("sr"),
+		Vp:  q.Peek("vp"),
+	}, *skipSSLVerify, *debug)
 }
 
-func serverDetect(w http.ResponseWriter, req *http.Request) {
+func detect(ctx *fasthttp.RequestCtx) {
 	err := ga.Detect(*skipSSLVerify)
 	if err != nil {
-		w.WriteHeader(http.StatusBadGateway)
+		ctx.Response.SetStatusCode(fasthttp.StatusBadGateway)
 	} else {
-		w.WriteHeader(http.StatusOK)
+		ctx.Response.SetStatusCode(fasthttp.StatusOK)
 	}
 }
 
 func main() {
 	flag.Parse()
+
+	router := fasthttprouter.New()
+	router.GET("/", index)
+	router.GET("/detect", detect)
+
 	log.Println("[Info] HTTP server start at: ", *httpAddr)
-	log.Fatal(http.ListenAndServe(*httpAddr, nil))
-}
-
-func getOrSetUUID(w http.ResponseWriter, req *http.Request) (string, error) {
-	cookie, err := req.Cookie("uuid")
-	var uid string
-	if err == http.ErrNoCookie {
-		ns, err := uuid.NewV4()
-		if err != nil {
-			return "", nil
-		}
-
-		uid = uuid.NewV5(ns, req.Form.Encode()+req.UserAgent()+req.RemoteAddr).String()
-		http.SetCookie(w, &http.Cookie{
-			Name:     "uuid",
-			Value:    uid,
-			Path:     "/",
-			MaxAge:   315360000,
-			HttpOnly: true,
-		})
-	} else {
-		uid = cookie.Value
-	}
-	return uid, nil
+	log.Fatal(fasthttp.ListenAndServe(*httpAddr, router.Handler))
 }
