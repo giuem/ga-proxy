@@ -18,7 +18,7 @@ var httpClient = &fasthttp.Client{
 
 // Data analytics data
 type Data struct {
-	UID []byte
+	UID string
 	Tid []byte
 	Dl  []byte
 	IP  string
@@ -40,7 +40,7 @@ func SendData(data *Data, skipSSLVerify, debug bool) {
 	q.Add("v", "1")
 	q.Add("t", "pageview")
 	q.AddBytesV("tid", data.Tid)
-	q.AddBytesV("cid", data.UID)
+	q.Add("cid", data.UID)
 	q.AddBytesV("dl", data.Dl)
 	q.Add("uip", data.IP)
 	q.AddBytesV("ua", data.Ua)

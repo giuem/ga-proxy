@@ -8,21 +8,21 @@ import (
 )
 
 // GetOrSetUUID get uuid from cookie, or set new
-func GetOrSetUUID(ctx *fasthttp.RequestCtx) ([]byte, error) {
-	uid := ctx.Request.Header.Cookie("uuid")
-	if len(uid) > 0 {
+func GetOrSetUUID(ctx *fasthttp.RequestCtx) (string, error) {
+	uid := string(ctx.Request.Header.Cookie("uuid"))
+	if uid != "" {
 		return uid, nil
 	}
 
 	ns, err := uuid.NewV4()
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	uid = uuid.NewV5(ns, string(ctx.UserAgent())).Bytes()
+	uid = uuid.NewV5(ns, string(ctx.UserAgent())).String()
 	cookie := fasthttp.AcquireCookie()
 	cookie.SetKey("uuid")
-	cookie.SetValueBytes(uid)
+	cookie.SetValue(uid)
 	cookie.SetPath("/")
 	cookie.SetExpire(time.Now().AddDate(24, 10, 10))
 	cookie.SetHTTPOnly(true)
