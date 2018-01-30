@@ -59,6 +59,7 @@ func index(ctx *fasthttp.RequestCtx) {
 func detect(ctx *fasthttp.RequestCtx) {
 	err := ga.Detect(*skipSSLVerify)
 	if err != nil {
+		log.Println("[Error] detect problem:", err)
 		ctx.Response.SetStatusCode(fasthttp.StatusBadGateway)
 	} else {
 		ctx.Response.SetStatusCode(fasthttp.StatusOK)
