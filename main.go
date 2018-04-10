@@ -72,6 +72,7 @@ func main() {
 	router := fasthttprouter.New()
 	router.GET("/", index)
 	router.GET("/detect", detect)
+	router.HEAD("/detect", detect)
 
 	log.Println("[Info] HTTP server start at: ", *httpAddr)
 	log.Fatal(fasthttp.ListenAndServe(*httpAddr, router.Handler))
