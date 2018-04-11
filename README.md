@@ -56,7 +56,7 @@ The program will run at 0.0.0.0:4000 and skip SSL verify
 
 #### 3. Add Script to your website
 
-See [script](script.js).
+See [script](js/script.js).
 
 Here is compression version.
 
