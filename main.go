@@ -57,7 +57,11 @@ func index(ctx *fasthttp.RequestCtx) {
 }
 
 func detect(ctx *fasthttp.RequestCtx) {
-	err := ga.Detect(*skipSSLVerify)
+	ch := make(chan error)
+	go func() {
+		ch <- ga.Detect(*skipSSLVerify)
+	}()
+	err := <-ch
 	if err != nil {
 		log.Println("[Error] detect problem:", err)
 		ctx.Response.SetStatusCode(fasthttp.StatusBadGateway)
