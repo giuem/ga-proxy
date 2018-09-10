@@ -7,6 +7,7 @@ var ga_url = "https://ga.giuem.com";
   var data = [
     'ga=' + ga,
     'dt=' + encode(document.title),
+    'de=' + encode(document.characterSet || document.charset),
     'dr=' + encode(document.referrer),
     'ul=' + (navigator.language || navigator.browserLanguage || navigator.userLanguage),
     'sd=' + screen.colorDepth + '-bit',
