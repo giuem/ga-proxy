@@ -25,6 +25,7 @@ type Data struct {
 	Ua  []byte
 	Dt  []byte
 	Dr  []byte
+	De  []byte
 	Ul  []byte
 	Sd  []byte
 	Sr  []byte
@@ -46,6 +47,7 @@ func SendData(data *Data, skipSSLVerify, debug bool) {
 	q.AddBytesV("ua", data.Ua)
 	q.AddBytesV("dt", data.Dt)
 	q.AddBytesV("dr", data.Dr)
+	q.AddBytesV("de", data.De)
 	q.AddBytesV("ul", data.Ul)
 	q.AddBytesV("sd", data.Sd)
 	q.AddBytesV("sr", data.Sr)
