@@ -49,6 +49,7 @@ func index(ctx *fasthttp.RequestCtx) {
 		Ua:  ctx.UserAgent(),
 		Dt:  q.Peek("dt"),
 		Dr:  q.Peek("dr"),
+		De:  q.Peek("de"),
 		Ul:  q.Peek("ul"),
 		Sd:  q.Peek("sd"),
 		Sr:  q.Peek("sr"),
