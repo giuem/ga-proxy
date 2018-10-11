@@ -25,6 +25,7 @@ func GetOrSetUUID(ctx *fasthttp.RequestCtx) (string, error) {
 	cookie.SetValue(uid)
 	cookie.SetPath("/")
 	cookie.SetExpire(time.Now().AddDate(24, 10, 10))
+	cookie.SetSecure(true)
 	cookie.SetHTTPOnly(true)
 	ctx.Response.Header.SetCookie(cookie)
 
