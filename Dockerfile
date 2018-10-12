@@ -1,22 +1,25 @@
-FROM golang:alpine3.6 AS BUILD
+FROM golang:1.11-alpine3.8 AS BUILD
 
-WORKDIR /go/src/github.com/giuem/ga_proxy
+WORKDIR /src
+
+RUN apk --no-cache add git
+
+COPY go.mod go.sum ./
+
+RUN go mod download
 
 COPY . .
 
-RUN  apk add --no-cache git
+RUN go build -ldflags "-w -s" -o ga_proxy
 
-RUN go get -v && \
-  go build -ldflags "-w -s" -o ga_proxy
-
-FROM alpine:3.6
+FROM alpine:3.8
 LABEL maintainer "giuem <i@giuem.com>"
 
 WORKDIR /app
 
 RUN apk --no-cache add ca-certificates curl
 
-COPY --from=BUILD /go/src/github.com/giuem/ga_proxy/ga_proxy .
+COPY --from=BUILD /src/ga_proxy .
 
 EXPOSE 80
 
