@@ -41,7 +41,7 @@ func index(ctx *fasthttp.RequestCtx) {
 
 	q := ctx.QueryArgs()
 
-	go ga.SendData(&ga.Data{
+	go ga.SendPageViewData(&ga.PageViewData{
 		UID: uid,
 		Tid: q.Peek("ga"),
 		Dl:  ctx.Referer(),
