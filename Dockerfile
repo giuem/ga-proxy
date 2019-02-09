@@ -18,6 +18,7 @@ LABEL maintainer "giuem <giuemcom+docker@gmail.com>"
 EXPOSE 80
 ENV IP=0.0.0.0
 ENV PORT=80
+ENV GIN_MODE=release
 
 COPY --from=BUILD /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=BUILD /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
