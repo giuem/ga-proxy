@@ -2,17 +2,18 @@ package ga
 
 import (
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/pkg/errors"
 )
 
-const url = "https://www.google-analytics.com/collect"
+const gaURL = "https://www.google-analytics.com/collect"
 
 var httpClient = &http.Client{}
 
 func send(qs string) error {
-	req, err := http.NewRequest(http.MethodPost, url, strings.NewReader(qs))
+	req, err := http.NewRequest(http.MethodPost, gaURL, strings.NewReader(qs))
 	if err != nil {
 		return errors.Wrap(err, "could not create request")
 	}
@@ -27,4 +28,13 @@ func send(qs string) error {
 	defer resp.Body.Close()
 
 	return nil
+}
+
+func concatURLValues(v1 url.Values, v2 url.Values) {
+	for key, values := range v2 {
+		if len(v2.Get(key)) != 0 && len(v1.Get(key)) == 0 {
+			// do not replace existed key
+			v1[key] = values
+		}
+	}
 }

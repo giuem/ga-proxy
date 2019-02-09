@@ -14,8 +14,12 @@ func Run(ip, port string) {
 	r.Use(gin.Logger())
 
 	r.NoRoute(handleRedirect)
-
+	// version < 1
 	r.GET("/", handlePageView)
+	// version >= 1
+	r.GET("/p", handlePageView)
+	r.GET("/t", handleTiming)
+
 	r.GET("/ping", handlePing)
 	r.HEAD("/ping", handlePing)
 

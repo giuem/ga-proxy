@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/giuem/ga-proxy/ga"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gofrs/uuid"
 )
@@ -30,4 +32,35 @@ func generateUUID(name string) string {
 	}
 
 	return uuid.NewV5(ns, name).String()
+}
+
+func getCommonData(c *gin.Context) ga.CommonData {
+	return ga.CommonData{
+		Version:          1,
+		TrackingID:       c.Query("ga"),
+		ClientID:         getUUID(c),
+		UserIP:           c.ClientIP(),
+		UserAgent:        c.Request.UserAgent(),
+		DocumentReferer:  c.Query("dr"),
+		ScreenResolution: c.Query("sr"),
+		ViewportSize:     c.Query("vp"),
+		DocumentEncoding: c.Query("de"),
+		ScreenColors:     c.Query("sd"),
+		UserLanguage:     c.Query("ul"),
+		DocumentLink:     c.Request.Referer(),
+		DocumentTitle:    c.Query("dt"),
+	}
+}
+
+func getTimingData(c *gin.Context) ga.TimingData {
+	return ga.TimingData{
+		PageLoadedTime:     c.Query("plt"),
+		DNSTime:            c.Query("dns"),
+		PageDownloadedTime: c.Query("pdt"),
+		RedirectTime:       c.Query("rrt"),
+		TCPTime:            c.Query("tcp"),
+		ServerResponseTime: c.Query("srt"),
+		DomInteractiveTime: c.Query("dit"),
+		ContentLoadedTime:  c.Query("clt"),
+	}
 }

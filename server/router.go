@@ -12,29 +12,21 @@ func handlePageView(c *gin.Context) {
 		handleRedirect(c)
 		return
 	}
-
+	c.Status(http.StatusOK)
 	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
 
-	uid := getUUID(c)
+	go ga.PageView(getCommonData(c))
+}
 
-	data := ga.CommonData{
-		Version:          1,
-		TrackingID:       c.Query("ga"),
-		ClientID:         uid,
-		UserIP:           c.ClientIP(),
-		UserAgent:        c.Request.UserAgent(),
-		DocumentReferer:  c.Query("dr"),
-		ScreenResolution: c.Query("sr"),
-		ViewportSize:     c.Query("vp"),
-		DocumentEncoding: c.Query("de"),
-		ScreenColors:     c.Query("sd"),
-		UserLanguage:     c.Query("ul"),
-		DocumentLink:     c.Request.Referer(),
-		DocumentTitle:    c.Query("dt"),
+func handleTiming(c *gin.Context) {
+	if len(c.Request.Referer()) == 0 || len(c.Query("ga")) == 0 {
+		handleRedirect(c)
+		return
 	}
-	go ga.PageView(data)
-
 	c.Status(http.StatusOK)
+	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
+
+	go ga.Timing(getCommonData(c), getTimingData(c))
 }
 
 func handlePing(c *gin.Context) {
