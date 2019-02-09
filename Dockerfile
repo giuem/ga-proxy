@@ -10,7 +10,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-w -s" -o ga_proxy
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-w -s" -o ga-proxy
 
 FROM alpine:3.8
 LABEL maintainer "giuem <i@giuem.com>"
@@ -24,4 +24,4 @@ EXPOSE 80
 # HEALTHCHECK --interval=1m --timeout=10s --start-period=1s --retries=2 \
 #   CMD curl -X HEAD -If http://localhost/detect || exit 1
 
-CMD ["/ga_proxy", "-s"]
+CMD ["/ga-proxy", "-i", "0.0.0.0", "-p", "80" ]

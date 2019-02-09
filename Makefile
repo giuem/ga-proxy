@@ -4,7 +4,7 @@ GOCMD=go
 GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
-BINARY_NAME=ga_proxy
+BINARY_NAME=ga-proxy
 OUTPUT_DIR=build
 
 all: build
@@ -14,5 +14,4 @@ build:
 
 clean:
 	$(GOCLEAN)
-	rm -f $(BINARY_NAME)
 	rm -rf $(OUTPUT_DIR)
