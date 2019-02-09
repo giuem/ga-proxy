@@ -24,7 +24,7 @@ COPY --from=BUILD /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=BUILD /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=BUILD /src/ga-proxy /ga-proxy
 
-HEALTHCHECK --interval=1m --timeout=10s --start-period=1s --retries=2 \
+HEALTHCHECK --interval=3m --timeout=10s --start-period=2s --retries=3 \
   CMD /ga-proxy ping
 
 CMD ["/ga-proxy"]

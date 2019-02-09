@@ -11,7 +11,13 @@ func Run(ip, port string) {
 	addr := fmt.Sprintf("%v:%v", ip, port)
 
 	r := gin.New()
-	r.Use(gin.Logger())
+	logger := gin.Logger()
+	r.Use(func(c *gin.Context) {
+		if c.Request.URL.Path == "/ping" {
+			return
+		}
+		logger(c)
+	})
 
 	r.NoRoute(handleRedirect)
 	// version < 1
