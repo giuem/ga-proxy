@@ -6,10 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var r *gin.Engine
+// Run starts a HTTP server
+func Run(ip, port string) {
+	addr := fmt.Sprintf("%v:%v", ip, port)
 
-func init() {
-	r = gin.New()
+	r := gin.New()
 	r.Use(gin.Logger())
 
 	r.NoRoute(handleRedirect)
@@ -17,11 +18,6 @@ func init() {
 	r.GET("/", handlePageView)
 	r.GET("/ping", handlePing)
 	r.HEAD("/ping", handlePing)
-}
-
-// Run starts a HTTP server
-func Run(ip, port string) {
-	addr := fmt.Sprintf("%v:%v", ip, port)
 
 	r.Run(addr)
 }
