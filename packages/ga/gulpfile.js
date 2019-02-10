@@ -5,9 +5,9 @@ const rename = require("gulp-rename");
 
 function build() {
   return gulp
-    .src("./js/src/**/*.js")
+    .src("./src/**/*.js")
     .pipe(buble())
-    .pipe(gulp.dest("./js/dist"))
+    .pipe(gulp.dest("./dist"))
     .pipe(
       uglify({
         mangle: true,
@@ -15,7 +15,7 @@ function build() {
       })
     )
     .pipe(rename({ suffix: ".min" }))
-    .pipe(gulp.dest("./js/dist"));
+    .pipe(gulp.dest("./dist"));
 }
 
 exports.build = build;

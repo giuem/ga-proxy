@@ -1,4 +1,4 @@
-.PHONY: build clean
+.PHONY: build clean test
 
 GOCMD=go
 GOBUILD=$(GOCMD) build
@@ -7,7 +7,7 @@ GOTEST=$(GOCMD) test
 BINARY_NAME=ga-proxy
 OUTPUT_DIR=build
 
-all: build
+all: test build
 
 build:
 	$(GOBUILD) -o $(OUTPUT_DIR)/$(BINARY_NAME) -v
@@ -15,3 +15,6 @@ build:
 clean:
 	$(GOCLEAN)
 	rm -rf $(OUTPUT_DIR)
+
+test:
+	$(GOTEST) -v ./...

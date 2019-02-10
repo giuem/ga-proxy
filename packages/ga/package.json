@@ -7,9 +7,12 @@
   "license": "MIT",
   "scripts": {
     "build": "gulp build",
-    "lint": "eslint ./js/src/**/*.js"
+    "test": "npm run lint",
+    "lint": "eslint ./src/**/*.js",
+    "size": "bundlesize"
   },
   "devDependencies": {
+    "bundlesize": "^0.17.1",
     "eslint": "^5.13.0",
     "eslint-config-prettier": "^4.0.0",
     "eslint-plugin-prettier": "^3.0.1",
@@ -21,5 +24,11 @@
   },
   "resolutions": {
     "gulp-buble/buble": "0.19.6"
-  }
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/*.min.js",
+      "maxSize": "1kb"
+    }
+  ]
 }
