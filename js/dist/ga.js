@@ -28,7 +28,7 @@
   function buildQueryString(params) {
     var qs = [];
     for (var k in params) {
-      if (params.hasOwnProperty(k) && k !== void 0) {
+      if (params.hasOwnProperty(k) && params[k] !== void 0) {
         qs.push(encode(k) + "=" + encode(params[k]));
       }
     }
