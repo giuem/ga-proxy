@@ -2,28 +2,28 @@ dist: trusty
 
 matrix:
   include: 
-    - lanauage: go
-      go:
-        - 1.11.x
-      before_install:
-        - go env
-        - go version
-      install: go get -v ./...
-      script: make
-      cache:
-        directories:
-          - $GOPATH/pkg/mod
-          - $HOME/.cache/go-build
-    - lanauage: node_js
-      node_js: 
-        - "10"
-      before_install: cd packages/ga
-      install: yarn install
-      script:
-        - yarn test
-        - yarn build
-        - yarn size
-      cache:
-        yarn: true
-        directories:
-          - packages/ga/node_modules
+  - lanauage: go
+    go:
+      - 1.11.x
+    before_install:
+      - go env
+      - go version
+    install: go get -v ./...
+    script: make
+    cache:
+      directories:
+        - $GOPATH/pkg/mod
+        - $HOME/.cache/go-build
+  - lanauage: node_js
+    node_js: 
+      - "10"
+    before_install: cd packages/ga
+    install: yarn install
+    script:
+      - yarn test
+      - yarn build
+      - yarn size
+    cache:
+      yarn: true
+      directories:
+        - packages/ga/node_modules
