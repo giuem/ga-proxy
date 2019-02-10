@@ -1,25 +1,26 @@
-lanauage: go
-go:
-  - master
+dist: trusty
 
-cache:
-  yarn: true
-  directories:
-    - $GOPATH/pkg/mod
-    - $HOME/.cache/go-build
-    - packages/ga/node_modules
-
-before_install:
-  - nvm install 10
-
-install:
-  - go mod download
-  - pushd packages/ga && yarn install && popd
-
-script:
-  - make
-  - pushd packages/ga
-  - yarn test
-  - yarn build
-  - yarn size
-  - popd
+matrix:
+  include: 
+  - language: go
+    go:
+      - 1.11.x
+    install: go mod download
+    script: make
+    cache:
+      directories:
+        - $GOPATH/pkg/mod
+        - $HOME/.cache/go-build
+  - language: node_js
+    node_js: 
+      - "10"
+    before_install: cd packages/ga
+    install: yarn install
+    script:
+      - yarn test
+      - yarn build
+      - yarn size
+    cache:
+      yarn: true
+      directories:
+        - packages/ga/node_modules
