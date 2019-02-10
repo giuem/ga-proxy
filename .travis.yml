@@ -1,8 +1,10 @@
+dist: trusty
+
 matrix:
   include: 
-    -
-      lanauage: go
-      go: 1.11.x
+    - lanauage: go
+      go:
+        - 1.11.x
       before_install:
         - go env
         - go version
@@ -12,8 +14,7 @@ matrix:
         directories:
           - $GOPATH/pkg/mod
           - $HOME/.cache/go-build
-    -
-      lanauage: node_js
+    - lanauage: node_js
       node_js: 
         - "10"
       before_install: cd packages/ga
