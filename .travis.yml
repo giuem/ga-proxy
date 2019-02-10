@@ -3,6 +3,10 @@ matrix:
     -
       lanauage: go
       go: 1.11.x
+      before_install:
+        - go env
+        - go version
+      install: go get -v ./...
       script: make
       cache:
         directories:
@@ -10,7 +14,8 @@ matrix:
           - $HOME/.cache/go-build
     -
       lanauage: node_js
-      node_js: "10"
+      node_js: 
+        - "10"
       before_install: cd packages/ga
       install: yarn install
       script:
