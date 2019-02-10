@@ -1,11 +1,10 @@
-dist: trusty
-
 matrix:
   include: 
   - language: go
     go:
       - 1.11.x
-    install: go mod download
+    env:
+      - GO111MODULE=on
     script: make
     cache:
       directories:
