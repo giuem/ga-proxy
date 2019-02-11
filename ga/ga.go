@@ -27,7 +27,7 @@ func Timing(data CommonData, tData TimingData) error {
 	if err != nil {
 		return errors.Wrap(err, "could not encode query")
 	}
-	v2, err := query.Values(data)
+	v2, err := query.Values(tData)
 	if err != nil {
 		return errors.Wrap(err, "could not encode query")
 	}
