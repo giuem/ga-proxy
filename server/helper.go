@@ -14,7 +14,7 @@ import (
 func getUUID(c *gin.Context) string {
 	uid, err := c.Cookie("uuid")
 	if err != nil { // cookie no found
-		uid := generateUUID(c.Request.UserAgent())
+		uid = generateUUID(c.Request.UserAgent())
 		c.SetCookie("uuid", uid, 2147483647, "/", "", false, false)
 	}
 
