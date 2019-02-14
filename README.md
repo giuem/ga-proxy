@@ -1,29 +1,19 @@
 # ga-proxy
 
-[![Docker Build Statu](https://img.shields.io/docker/build/giuem/ga-proxy.svg?style=flat-square)](https://hub.docker.com/r/giuem/ga-proxy/)
+[![Travis Status](https://img.shields.io/travis/com/giuem/ga-proxy.svg?style=flat-square)](https://travis-ci.com/giuem/ga-proxy)
+[![Docker Build Status](https://img.shields.io/docker/build/giuem/ga-proxy.svg?style=flat-square)](https://hub.docker.com/r/giuem/ga-proxy/)
 [![GitHub release](https://img.shields.io/github/release/giuem/ga-proxy.svg?style=flat-square)](https://github.com/giuem/ga-proxy/releases/latest)
+[![Size](https://img.badgesize.io/https://unpkg.com/@giuem/ga-proxy/dist/ga.min.js?compression=gzip&style=flat-square)](https://unpkg.com/@giuem/ga-proxy/dist/)
 
-Accelerate Google Analytics
-
-
+Accelerate Google Analytics.
 
 ## Get Start
 
-### Run with Docker
+### Run via Docker
 
 ```bash
 docker pull giuem/ga-proxy
 docker run -d -p <port>:80 --name <container_name> giuem/ga-proxy
-```
-
-### Run with Docker Compoese
-
-vi `docker-compose.yml`, set port range (Defalut is `9080-9180`).
-
-Then start containers, specify the number of instances.
-
-``` bash
-docker-compose up -d --scale proxy=NUM
 ```
 
 ### Run as you like
@@ -35,42 +25,31 @@ Download binary from [release](https://github.com/giuem/ga-proxy/releases) or bu
 #### 2. Run
 
 ```
-./ga_proxy [arguments]
+GIN_MODE=release ./ga-proxy [arguments]
 ```
 
 options:
 
 ```
--d, -debug output debug info.
--s, -skip_ssl skip ssl verify. (some envirinment don't have certificate)
--l, -listen listen address, default is :80
+--ip IP, -i IP        IP to listen (default: "127.0.0.1") [$IP]
+--port port, -p port  port to listen (default: "9080") [$PORT]
 ```
 
 e.g.
 
 ```
-./ga_proxy -s -l :4000
+./ga_proxy -i 0.0.0.0 -p 80
 ```
 
-The program will run at 0.0.0.0:4000 and skip SSL verify 
+### 3. Insert script to your website
 
-#### 3. Add Script to your website
-
-See [script](js/script.js).
-
-Here is compression version.
-
-```javascript
-!function(a,b,c,d,e){var f=c.screen,g=encodeURIComponent,h=["ga="+a,"dt="+g(d.title),"dr="+g(d.referrer),"ul="+(e.language||e.browserLanguage||e.userLanguage),"sd="+f.colorDepth+"-bit","sr="+f.width+"x"+f.height,"vp="+Math.max(d.documentElement.clientWidth,c.innerWidth||0)+"x"+Math.max(d.documentElement.clientHeight,c.innerHeight||0),"z="+Date.now()];c.__ga_img=new Image,c.__ga_img.src=b+"?"+h.join("&")}("UA-xxxx-x","https://ga.giuem.com",window,document,navigator,location);
+``` html
+<script>
+// replace following variables to your own
+window.ga_tid = "UA-XXXXX-Y";
+window.ga_url = "https://ga.giuem.com";
+</script>
+<script src="https://unpkg.com/@giuem/ga-proxy/dist/ga.min.js" async></script>
 ```
 
-You need to change `UA-xxxx-x` and `https://ga.giuem.com` to your own.
-
-Or simple usage, just change `UA-xxxx-x`, and use my service (not fast outside of China)
-
-## Build
-
-```bash
-gox -os="!freebsd !netbsd !openbsd" -ldflags="-s -w" -output="build/{{.Dir}}_{{.OS}}_{{.Arch}}"
-```
-
+Note: `ga.giuem.com` is my own service, it do not promise any SLA and may shutdown at some day. You'd better deploy your own server.
