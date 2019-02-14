@@ -1,7 +1,7 @@
 {
   "name": "@giuem/ga-proxy",
-  "version": "1.0.0",
-  "main": "js/dist/ga.min.js",
+  "version": "1.0.1",
+  "main": "dist/ga.min.js",
   "repository": "git@github.com:giuem/ga-proxy.git",
   "author": "giuem <giuemcom@gmail.com>",
   "license": "MIT",
@@ -11,6 +11,9 @@
     "lint": "eslint ./src/**/*.js",
     "size": "bundlesize"
   },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "bundlesize": "^0.17.1",
     "eslint": "^5.13.0",
