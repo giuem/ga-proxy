@@ -4,6 +4,7 @@
 [![Docker Build Status](https://img.shields.io/docker/build/giuem/ga-proxy.svg?style=flat-square)](https://hub.docker.com/r/giuem/ga-proxy/)
 [![GitHub release](https://img.shields.io/github/release/giuem/ga-proxy.svg?style=flat-square)](https://github.com/giuem/ga-proxy/releases/latest)
 [![Size](https://img.badgesize.io/https://unpkg.com/@giuem/ga-proxy/dist/ga.min.js?compression=gzip&style=flat-square)](https://unpkg.com/@giuem/ga-proxy/dist/)
+[![](https://data.jsdelivr.com/v1/package/npm/@giuem/ga-proxy/badge)](https://www.jsdelivr.com/package/npm/@giuem/ga-proxy)
 
 Accelerate Google Analytics.
 
