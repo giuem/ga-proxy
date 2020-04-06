@@ -7,7 +7,6 @@
   var timing = performance && performance.timing;
 
   var pvData = {
-    ga: win.ga_tid,
     dt: doc.title,
     de: doc.characterSet || doc.charset,
     dr: doc.referrer || void 0,
@@ -22,7 +21,8 @@
       max(doc.documentElement.clientWidth, win.innerWidth || 0) +
       "x" +
       max(doc.documentElement.clientHeight, win.innerHeight || 0),
-    z: Date.now()
+    ga: win.ga_tid,
+    z: new Date().getTime()
   };
 
   function buildQueryString(params) {
@@ -39,6 +39,17 @@
     var img = new Image();
     // img.width = img.height = 1;
     img.src = win.ga_url + uri + "?" + buildQueryString(params);
+  }
+
+  function sendBeacon(uri, params) {
+    if (!navigator.sendBeacon) { return false; }
+    return navigator.sendBeacon(uri, params);
+  }
+
+  function send(uri, params) {
+    if (!sendBeacon(uri, params)) {
+      sendViaImg(uri, params);
+    }
   }
 
   function sendTiming() {
@@ -63,11 +74,11 @@
       perfData[key] = pvData[key];
     }
 
-    sendViaImg("/t", perfData);
+    send("/t", perfData);
   }
 
   // page view
-  sendViaImg("/p", pvData);
+  send("/p", pvData);
   // timing
   if (document.readyState == "complete") {
     sendTiming();
