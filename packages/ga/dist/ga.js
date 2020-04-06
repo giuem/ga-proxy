@@ -41,16 +41,16 @@
     img.src = uri + "?" + buildQueryString(params);
   }
 
-  function sendBeacon(uri, params) {
-    if (!navigator.sendBeacon) { return false; }
-    return navigator.sendBeacon(uri, params);
-  }
+  // function sendBeacon(uri, params) {
+  //   if (!navigator.sendBeacon) return false;
+  //   return navigator.sendBeacon(uri, params);
+  // }
 
   function send(uri, params) {
     uri = win.ga_url + uri;
-    if (!sendBeacon(uri, params)) {
-      sendViaImg(uri, params);
-    }
+    // if (!sendBeacon(uri, params)) {
+    sendViaImg(uri, params);
+    // }
   }
 
   function sendTiming() {
