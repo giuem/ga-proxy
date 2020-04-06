@@ -1,6 +1,6 @@
 {
   "name": "@giuem/ga-proxy",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "dist/ga.min.js",
   "repository": "git@github.com:giuem/ga-proxy.git",
   "author": "giuem <giuemcom@gmail.com>",

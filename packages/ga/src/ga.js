@@ -38,7 +38,7 @@
   function sendViaImg(uri, params) {
     const img = new Image();
     // img.width = img.height = 1;
-    img.src = win.ga_url + uri + "?" + buildQueryString(params);
+    img.src = uri + "?" + buildQueryString(params);
   }
 
   function sendBeacon(uri, params) {
@@ -47,6 +47,7 @@
   }
 
   function send(uri, params) {
+    uri = win.ga_url + uri;
     if (!sendBeacon(uri, params)) {
       sendViaImg(uri, params);
     }
