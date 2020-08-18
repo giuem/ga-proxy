@@ -38,6 +38,7 @@
   function sendViaImg(uri, params) {
     const img = new Image();
     // img.width = img.height = 1;
+    img.referrerPolicy = "unsafe-url";
     img.src = uri + "?" + buildQueryString(params);
   }
 
