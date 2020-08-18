@@ -5,6 +5,7 @@
   // const min = Math.min;
   var performance = win.performance;
   var timing = performance && performance.timing;
+  var navigation = performance && performance.navigation;
 
   var pvData = {
     dt: doc.title,
@@ -38,6 +39,7 @@
   function sendViaImg(uri, params) {
     var img = new Image();
     // img.width = img.height = 1;
+    img.referrerPolicy = "unsafe-url";
     img.src = uri + "?" + buildQueryString(params);
   }
 
@@ -78,12 +80,14 @@
     send("/t", perfData);
   }
 
-  // page view
-  send("/p", pvData);
-  // timing
-  if (document.readyState == "complete") {
-    sendTiming();
-  } else {
-    win.addEventListener("load", sendTiming);
+  if (!navigation || navigation.type != navigation.TYPE_RELOAD) {
+    // page view
+    send("/p", pvData);
+    // timing
+    if (document.readyState == "complete") {
+      sendTiming();
+    } else {
+      win.addEventListener("load", sendTiming);
+    }
   }
 })(window, document, navigator);
