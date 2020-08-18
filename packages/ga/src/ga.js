@@ -5,6 +5,7 @@
   // const min = Math.min;
   const performance = win.performance;
   const timing = performance && performance.timing;
+  const navigation = performance && performance.navigation;
 
   const pvData = {
     dt: doc.title,
@@ -79,12 +80,14 @@
     send("/t", perfData);
   }
 
-  // page view
-  send("/p", pvData);
-  // timing
-  if (document.readyState == "complete") {
-    sendTiming();
-  } else {
-    win.addEventListener("load", sendTiming);
+  if (!navigation || navigation.type != navigation.TYPE_RELOAD) {
+    // page view
+    send("/p", pvData);
+    // timing
+    if (document.readyState == "complete") {
+      sendTiming();
+    } else {
+      win.addEventListener("load", sendTiming);
+    }
   }
 })(window, document, navigator);
